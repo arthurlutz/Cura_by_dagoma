@@ -18,7 +18,7 @@ BUILD_TARGET=${1:-none}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-export BUILD_NAME=Dagoma
+export BUILD_NAME=Cura-by-Dagoma
 TARGET_DIR=${BUILD_NAME}
 
 ##Which versions of external programs to use
@@ -275,7 +275,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/Dagoma_${BUILD_NAME}.deb
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/${BUILD_NAME}.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi

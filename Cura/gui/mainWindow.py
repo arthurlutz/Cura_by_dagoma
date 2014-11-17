@@ -668,6 +668,9 @@ class normalSettingsPanel(configBase.configPanelBase):
 	class Support:
 		def __init__(self):
 			self.support = None
+
+	class Brim:
+		def __init__(self):
 			self.platform_adhesion = None
 
 	def __init__(self, parent, callback = None):
@@ -687,6 +690,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.Refresh_Fila()
 		self.Refresh_Rempli()
 		self.Refresh_Checkboxsupp()
+		self.Refresh_Checkboxbrim()
 
 		profile.saveProfile(profile.getDefaultProfilePath(), True)
 
@@ -731,6 +735,8 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 		#Evt CheckboxSupport
 		self.Bind(wx.EVT_CHECKBOX, self.EVT_Checkboxsupp,self.printsupp)
+		#Evt CheckboxBrim
+		self.Bind(wx.EVT_CHECKBOX, self.EVT_Checkboxbrim,self.printbrim)
 
 		#Evt Print Button
 		self.Bind(wx.EVT_BUTTON, self.Click_Button, self.button_1)
@@ -754,7 +760,8 @@ class normalSettingsPanel(configBase.configPanelBase):
 		sizer_1.Add(self.radio_box_2, pos = (4, 0) , span = (1, 3), flag = wx.LEFT|wx.EXPAND|wx.RIGHT, border = 5)
 		sizer_1.Add(self.radio_box_1, pos = (5, 0), span = (1, 3), flag = wx.LEFT|wx.EXPAND|wx.RIGHT, border = 5)
 		sizer_1.Add(self.printsupp, pos = (6, 0), span = (1, 3), flag = wx.LEFT|wx.EXPAND|wx.RIGHT, border = 5)
-		sizer_1.Add(self.button_1, pos = (9, 0), span = (1, 3), flag = wx.LEFT|wx.EXPAND|wx.RIGHT|wx.TOP|wx.BOTTOM, border = 5)
+		sizer_1.Add(self.printbrim, pos = (7, 0), span = (1, 3), flag = wx.LEFT|wx.EXPAND|wx.RIGHT, border = 5)
+		sizer_1.Add(self.button_1, pos = (9, 0), span = (3, 3), flag = wx.LEFT|wx.EXPAND|wx.RIGHT|wx.TOP|wx.BOTTOM, border = 5)
 		sizer_1.AddGrowableCol(1)
 		sizer_1.AddGrowableRow(8)
 		self.SetSizerAndFit(sizer_1)
@@ -772,6 +779,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.get_remplissage()
 		self.get_Precision()
 		self.get_support()
+		self.get_brim()
 		self.init_Config_Preferences()
 		self.init_Config_Adv()
 		self.init_Config_Expert()
@@ -935,10 +943,22 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.supports = []
 		self.supports.append(self.Support())
 		self.supports[0].support = self.getNodeText(support_enable[0].getElementsByTagName("support")[0])
-		self.supports[0].platform_adhesion = self.getNodeText(support_enable[0].getElementsByTagName("platform_adhesion")[0])
+		# self.supports[0].platform_adhesion = self.getNodeText(support_enable[0].getElementsByTagName("platform_adhesion")[0])
 		self.supports.append(self.Support())
 		self.supports[1].support = self.getNodeText(support_disable[0].getElementsByTagName("support")[0])
-		self.supports[1].platform_adhesion = self.getNodeText(support_disable[0].getElementsByTagName("platform_adhesion")[0])
+		# self.supports[1].platform_adhesion = self.getNodeText(support_disable[0].getElementsByTagName("platform_adhesion")[0])
+
+	def get_brim(self):
+		bloc_name = doc.getElementsByTagName("Bloc_Brim")[0].getAttribute("label")
+		self.printbrim = wx.CheckBox(self, wx.ID_ANY, bloc_name)
+		brim_enable = doc.getElementsByTagName("Brim_Enable")
+		brim_disable = doc.getElementsByTagName("Brim_Disable")
+		self.brims = []
+		self.brims.append(self.Brim())
+		self.brims[0].platform_adhesion = self.getNodeText(brim_enable[0].getElementsByTagName("platform_adhesion")[0])
+		self.brims.append(self.Brim())
+		self.brims[1].platform_adhesion = self.getNodeText(brim_disable[0].getElementsByTagName("platform_adhesion")[0])
+
 
 	def Refresh_Fila(self):
 		fila = self.filaments[self.combo_box_1.GetSelection()]
@@ -975,13 +995,25 @@ class normalSettingsPanel(configBase.configPanelBase):
 	def Refresh_Checkboxsupp(self):
 		if self.printsupp.GetValue():
 			profile.putProfileSetting('support', self.supports[0].support)
-			profile.putProfileSetting('platform_adhesion', self.supports[0].platform_adhesion)
 		else:
 			profile.putProfileSetting('support', self.supports[1].support)
-			profile.putProfileSetting('platform_adhesion', self.supports[1].platform_adhesion)
+
+	def Refresh_Checkboxbrim(self):
+		if self.printbrim.GetValue():
+			profile.putProfileSetting('platform_adhesion', self.brims[0].platform_adhesion)
+		else:
+			profile.putProfileSetting('platform_adhesion', self.brims[1].platform_adhesion)
+
 
 	def EVT_Checkboxsupp(self, event):
 		self.Refresh_Checkboxsupp()
+		profile.saveProfile(profile.getDefaultProfilePath(), True)
+		self.GetParent().GetParent().GetParent().scene.updateProfileToControls()
+		self.GetParent().GetParent().GetParent().scene.sceneUpdated()
+		event.Skip()
+
+	def EVT_Checkboxbrim(self, event):
+		self.Refresh_Checkboxbrim()
 		profile.saveProfile(profile.getDefaultProfilePath(), True)
 		self.GetParent().GetParent().GetParent().scene.updateProfileToControls()
 		self.GetParent().GetParent().GetParent().scene.sceneUpdated()

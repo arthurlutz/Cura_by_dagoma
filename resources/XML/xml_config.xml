@@ -110,15 +110,24 @@ Mail : aurelien@dagoma.fr
   <!-- END BLOC Precision -->  
 
   <!-- Paramatrage BLOC SUPPORT -->
-  <Bloc_Support label="Support structure">
+  <Bloc_Support label="Renfort pour impression">
     <Support_Enable>
       <support>Touching buildplate</support>
-      <platform_adhesion>Brim</platform_adhesion>
     </Support_Enable>
     <Support_Disable>
       <support>None</support>
-      <platform_adhesion>None</platform_adhesion>
     </Support_Disable>
+  <!-- END BLOC SUPPORT -->
+
+  <!-- Paramatrage BLOC BRIM -->    
+    <Bloc_Brim label="Accroche sur plateau étendu">
+      <Brim_Enable>
+	<platform_adhesion>Brim</platform_adhesion>
+      </Brim_Enable>
+      <Brim_Disable>
+	<platform_adhesion>None</platform_adhesion>
+      </Brim_Disable>
+    </Bloc_Brim>
   </Bloc_Support>
   <!-- END BLOC SUPPORT -->
 

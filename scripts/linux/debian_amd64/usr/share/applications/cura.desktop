@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Cura
-Comment=Cura
+Name=Cura-by-dagoma
+Comment=Cura-by-dagoma
 Icon=/usr/share/cura/resources/images/c.png
 Exec=/usr/bin/python /usr/share/cura/cura.py
 Path=/usr/share/cura/

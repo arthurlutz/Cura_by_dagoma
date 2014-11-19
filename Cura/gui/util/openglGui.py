@@ -449,11 +449,14 @@ class glButton(glGuiControl):
 		return x0 + w / 2, y0 + h / 2
 
 	def draw(self):
-		if self._hidden:
-			return
+		# if self._hidden: #Comment by dagoma
+		# 	return
+		try :
 
-		cx = (self._imageID % 4) / 4
-		cy = int(self._imageID / 4) / 4
+			cx = (self._imageID % 4) / 4
+			cy = int(self._imageID / 4) / 4
+		except :
+			pass
 		bs = self.getMinSize()[0]
 		pos = self._getPixelPos()
 
@@ -468,7 +471,10 @@ class glButton(glGuiControl):
 		else:
 			glColor4ub(255,255,255,255)
 		openglHelpers.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, 0)
-		openglHelpers.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, self._imageID)
+		try : 
+			openglHelpers.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, self._imageID)
+		except :
+			pass
 		if self._showExpandArrow:
 			if self._selected:
 				openglHelpers.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1)
@@ -497,6 +503,7 @@ class glButton(glGuiControl):
 		glPopMatrix()
 		progress = self._progressBar
 		if progress is not None:
+			bs = 64 #Add by dagoma
 			glColor4ub(60,60,60,255)
 			openglHelpers.glDrawQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4)
 			glColor4ub(255,255,255,255)
@@ -506,7 +513,7 @@ class glButton(glGuiControl):
 			glTranslatef(pos[0], pos[1], 0)
 			glTranslatef(0, 0.6*bs, 0)
 			glTranslatef(0, 6, 0)
-			#glTranslatef(0.6*bs*scale, 0, 0)
+			glTranslatef(0.6*bs*scale, 0, 0)
 
 			for line in self._altTooltip.split('\n'):
 				glPushMatrix()

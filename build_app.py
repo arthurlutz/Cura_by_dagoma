@@ -67,7 +67,7 @@ if sys.platform.startswith('darwin'):
     }
     OPTIONS = {
         'argv_emulation': True,
-        'iconfile': 'resources/dagoma.icns',
+        'iconfile': 'resources/cura.icns',
         'includes': ['objc', 'Foundation'],
         'resources': DATA_FILES,
         'optimize': '2',

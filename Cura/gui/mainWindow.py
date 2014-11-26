@@ -723,9 +723,12 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 
 		#Evt Select Filament
-		self.Bind(wx.EVT_COMBOBOX, self.EVT_Fila, self.combo_box_1)
-		self.Bind(wx.EVT_TEXT, self.EVT_Fila, self.combo_box_1)
-		self.Bind(wx.EVT_TEXT_ENTER, self.EVT_Fila, self.combo_box_1)
+		if sys.platform == 'darwin':
+			self.Bind(wx.EVT_CHOICE, self.EVT_Fila, self.combo_box_1)
+		else:
+			self.Bind(wx.EVT_COMBOBOX, self.EVT_Fila, self.combo_box_1)
+			self.Bind(wx.EVT_TEXT, self.EVT_Fila, self.combo_box_1)
+			self.Bind(wx.EVT_TEXT_ENTER, self.EVT_Fila, self.combo_box_1)
 
 		#Evt Select Précision
 		self.Bind(wx.EVT_RADIOBOX, self.EVT_Preci, self.radio_box_1)
@@ -887,7 +890,10 @@ class normalSettingsPanel(configBase.configPanelBase):
 			except:
 				print 'Some Error in Filament Bloc'
 				pass
-		self.combo_box_1 = wx.ComboBox(self, wx.ID_ANY, choices = choices , style=wx.CB_DROPDOWN | wx.CB_SIMPLE | wx.CB_READONLY)
+		if sys.platform == 'darwin': #Change Combobox to an Choice cause in MAC OS X Combobox have some bug
+			self.combo_box_1 = wx.Choice(self, wx.ID_ANY, choices = choices) 
+		else:
+			self.combo_box_1 = wx.ComboBox(self, wx.ID_ANY, choices = choices , style=wx.CB_DROPDOWN | wx.CB_SIMPLE | wx.CB_READONLY)
 
 
 	def get_remplissage(self):

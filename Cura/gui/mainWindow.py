@@ -962,7 +962,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 	def Refresh_Fila(self):
 		fila = self.filaments[self.combo_box_1.GetSelection()]
-		if fila.type == 'Autre':
+		if fila.type == 'Autre PLA':
 			self.spin_ctrl_1.Enable(True)
 		else:
 			self.spin_ctrl_1.Enable(False)

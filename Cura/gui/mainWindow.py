@@ -36,7 +36,8 @@ doc = minidom.parse(resources.getPathForXML('xml_config.xml'))
 
 class mainWindow(wx.Frame):
 	def __init__(self):
-		super(mainWindow, self).__init__(None, title=version.getVersion())
+		super(mainWindow, self).__init__(None, title='Cura by dagoma'# version.getVersion()
+						 )
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
